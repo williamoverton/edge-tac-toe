@@ -1,0 +1,13 @@
+[package]
+name = "edge-tac-toe"
+version = "0.1.0"
+authors = []
+edition = "2018"
+
+[profile.release]
+debug = true
+
+[dependencies]
+fastly = "0.6.0"
+rand = "0.8.3"
+cookie = "0.14"

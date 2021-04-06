@@ -1,0 +1,6 @@
+authors = ["william.overton@dunelm.com"]
+description = "tic-tac-toe written in rust"
+language = "rust"
+manifest_version = 1
+name = "edge-tac-toe"
+service_id = "3hM7xe909MaDo8MiVcY21t"

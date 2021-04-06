@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="tic-tac-toe at the edge">
+  <meta name="author" content="William Overton">
+
+  <title>Edge-Tac-Toe</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <style>
+    /* CSS from: https://dev.to/ayushmanbthakur/how-to-make-tic-tac-toe-in-browser-with-html-css-and-js-28ed */
+
+    #block_0,
+    #block_1,
+    #block_2 {
+      border-top: none;
+    }
+
+    #block_0,
+    #block_3,
+    #block_6 {
+      border-left: none;
+    }
+
+    #block_6,
+    #block_7,
+    #block_8 {
+      border-bottom: none;
+    }
+
+    #block_2,
+    #block_5,
+    #block_8 {
+      border-right: none;
+    }
+
+    .block.occupied:hover {
+      background: #ffa8a8;
+    }
+
+    .play-area {
+      display: grid;
+      width: 300px;
+      height: 300px;
+      grid-template-columns: auto auto auto;
+    }
+
+    .block {
+      display: flex;
+      width: 100px;
+      height: 100px;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: bold;
+      border: 3px solid black;
+      transition: background 0.2s ease-in-out;
+    }
+
+    .block:hover {
+      cursor: pointer;
+      background: #d1e5ed;
+    }
+
+    .play-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h5 class="my-0 mr-md-auto font-weight-normal">Edge-Tac-Toe</h5>
+  </div>
+
+  <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Tic Tac Toe</h1>
+    <p class="lead">Running in Fastly's Compute@Edge platform, written in Rust.</p>
+  </div>
+
+  <div class="play-container">
+    <div class="play-area"></div>
+  </div>
+
+  <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <a class="btn btn-light" href="/">Restart</a>
+  </div>
+
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
+    integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf"
+    crossorigin="anonymous"></script>
+
+  <script>
+    const playerToken = "O"
+    let board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
+    const boardContainer = document.querySelector(".play-area");
+
+    let locked = false;
+
+    const render = () => {
+      // Clear board
+      boardContainer.innerHTML = "";
+
+      // draw board
+      board.forEach((e, i) => {
+        boardContainer.innerHTML += `<div id="block_${i}" class="block ${board[i] != "-" ? "occupied" : ""}" onclick="pick(${i})">${board[i] != "-" ? board[i] : ""}</div>`;
+      });
+    };
+
+    const pick = (cellId) => {
+      if (board[cellId] != "-") return;
+      if (locked) return;
+
+      locked = true;
+
+      board[cellId] = playerToken;
+
+      render();
+
+      fetch(`/next?board=${serialiseBoard()}`).then(res => {
+        board = res.text().then(text => {
+          board = text.split("");
+          render();
+          locked = false;
+        })
+
+      })
+    }
+
+    const serialiseBoard = () => {
+      return board.join("");
+    }
+
+    render();
+  </script>
+</body>
+
+</html>
