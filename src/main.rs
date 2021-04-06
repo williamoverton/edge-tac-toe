@@ -22,7 +22,7 @@ fn main(req: Request) -> Result<Response, Error> {
             match b.pick() {
                 Ok(status) => {
                     let body: String = match status {
-                        board::ActionStatus::AIWon => String::from(" I WIN   "),
+                        board::ActionStatus::AIWon => String::from(" I    WIN"),
                         board::ActionStatus::PlayerWon => String::from("YOU   WIN"),
                         _ => b.get_board_string(),
                     };
