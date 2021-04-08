@@ -51,7 +51,7 @@ impl Board {
         }
 
         for i in 0..input.len() {
-            let ic = input.chars().nth(i).unwrap();
+            let ic = char::from(input.as_bytes()[i]);
 
             if ic == '-' {
                 continue;
