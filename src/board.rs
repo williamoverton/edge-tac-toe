@@ -124,8 +124,8 @@ impl Board {
             let mut our_count = 0;
 
             for &cell_id in lines[i].iter() {
-                if self.cells[*&cell_id as usize].is_owned {
-                    if self.cells[*&cell_id as usize].owner == self.our_cell_value {
+                if self.cells[cell_id as usize].is_owned {
+                    if self.cells[cell_id as usize].owner == self.our_cell_value {
                         our_count += 1;
                     } else {
                         player_count += 1;
