@@ -84,13 +84,7 @@ impl Board {
     }
 
     pub fn is_cells_available(&self) -> bool {
-        for i in 0..self.cells.len() {
-            if !self.cells[i].is_owned {
-                return true;
-            }
-        }
-
-        false
+        !self.cells.iter().any(|cell| cell.is_owned)
     }
 
     fn get_lines(&self) -> [[usize; 3]; 8] {
