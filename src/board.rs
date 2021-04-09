@@ -51,7 +51,7 @@ impl Board {
         }
 
         for i in 0..input.len() {
-            let ic = input.chars().nth(i).unwrap();
+            let ic = char::from(input.as_bytes()[i]);
 
             if ic == '-' {
                 continue;
@@ -84,13 +84,7 @@ impl Board {
     }
 
     pub fn is_cells_available(&self) -> bool {
-        for i in 0..self.cells.len() {
-            if !self.cells[i].is_owned {
-                return true;
-            }
-        }
-
-        false
+        self.cells.iter().any(|cell| !cell.is_owned)
     }
 
     fn get_lines(&self) -> [[usize; 3]; 8] {
@@ -130,8 +124,8 @@ impl Board {
             let mut our_count = 0;
 
             for &cell_id in lines[i].iter() {
-                if self.cells[*&cell_id as usize].is_owned {
-                    if self.cells[*&cell_id as usize].owner == self.our_cell_value {
+                if self.cells[cell_id as usize].is_owned {
+                    if self.cells[cell_id as usize].owner == self.our_cell_value {
                         our_count += 1;
                     } else {
                         player_count += 1;
